@@ -1,0 +1,41 @@
+# can be one of these: ps2 win32 linux osx
+BUILDTARGET = linux
+
+# set this to 1 for debugging enabled
+DEBUG ?= 0
+
+include nesemu.defs
+
+CC = gcc
+CXX = g++
+LD = gcc
+AS = as
+
+
+DIRECTIVES = -DLINUX -DFLASH -DOSX -DSDL -DC_RENDER # OSX for correct typedefs
+
+CFLAGS = $(DIRECTIVES) -I. -I/Users/edmcmanus/alchemy/usr/local/include -I/Users/edmcmanus/alchemy/alchemy/avm2-libc/include
+LDFLAGS = -L/Users/edmcmanus/alchemy/usr/local/lib -L/Users/edmcmanus/alchemy/alchemy/avm2-libc/lib -lz -lm -lSDL -lSDLmain # -lpng
+
+ifeq ($(DEBUG),1)
+	CFLAGS += -g
+else
+	CFLAGS += -O2
+	LDFLAGS += -s
+endif
+
+CFLAGS += -swc
+
+TARGET = libNES
+TARGETP = nesemu-packed.linux.elf
+
+# Flash-specific
+OBJS += system/flash/flashmain.o
+
+# include the sdl and win32 code
+OBJS += $(SDL_OBJ) system/linux/filesystem.o system/linux/stricmp.o
+
+include nesemu.make
+
+gdb:
+	gdb $(TARGET) --eval-command=run

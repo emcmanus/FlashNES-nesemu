@@ -1,0 +1,68 @@
+# can be one of these: ps2 wii win32 linux osx
+BUILDTARGET = ps2
+
+# set this to 1 for debugging enabled
+DEBUG = 0
+
+include nesemu.defs
+
+CC = ee-gcc
+CXX = ee-g++
+LD = ee-gcc
+AS = ee-gcc -xassembler-with-cpp -c
+
+EE_LIBS = -lgraph -lpacket -lfileXio -lhdd -ldma -lmc -lpad -lm -lz -lc -lkernel -lpatches
+
+EE_INCLUDES = -I$(PS2SDK)/ee/include -I$(PS2DEV)/ee/include -I$(PS2SDK)/common/include -I.
+EE_DEFINES = -DPS2 -DTYPE_MC -DROM_PADMAN
+EE_OPT = -fomit-frame-pointer -fno-common -funsigned-char
+EE_OPT += -falign-functions=64
+#EE_OPT += -fexpensive-optimizations -funroll-loops
+EE_MISC = -G0 -Wall
+ifeq ($(DEBUG),1)
+	EE_MISC += -g
+	LDFLAGS =
+else
+	EE_MISC += -O2 $(EE_OPT)
+	LDFLAGS = -s
+endif
+EE_CFLAGS = $(EE_INCLUDES) $(EE_DEFINES) $(EE_MISC) $(EE_OPT)
+IOP_CFLAGS = -miop -O2 -G0 -I$(PS2SDK)/iop/include -I$(PS2SDK)/common/include -I. -Wall -fno-builtin-printf
+
+CFLAGS = $(EE_CFLAGS)
+LDFLAGS += -nostartfiles -T $(PS2SDK)/ee/startup/linkfile \
+	-L $(PS2SDK)/ee/lib -L $(PS2DEV)/gsKit/lib \
+	-L /c/zlib -L. \
+	$(PS2SDK)/ee/startup/crt0.o $(EE_LIBS)
+
+TARGET = nesemu.ps2.elf
+TARGETP = nesemu-packed.ps2.elf
+
+PACKER = $(PS2DEV)/packer/ps2-packer.exe
+PACKERFLAGS = $(TARGET) $(TARGETP)
+
+# include the sdl and win32 code
+IRX_OBJ = system/ps2/sjpcm.o system/ps2/usbd_irx.o system/ps2/usb_mass_irx.o
+IRX_OBJ += system/ps2/fileXio.o
+IRX_OBJ += system/ps2/ps2atad.o
+IRX_OBJ += system/ps2/ps2hdd.o
+IRX_OBJ += system/ps2/ps2fs.o
+PS2_OBJ = system/ps2/nesemu_icn.o
+PS2_OBJ += system/ps2/dma_asm.o system/ps2/gs_asm.o system/ps2/ps2_asm.o
+PS2_OBJ += system/ps2/g2.o system/ps2/gs.o system/ps2/sjpcm_rpc.o
+PS2_OBJ += system/ps2/video.o system/ps2/input.o system/ps2/sound.o
+PS2_OBJ += system/ps2/system.o system/ps2/filesystem.o system/ps2/file.o
+PS2_OBJ += system/ps2/config_defaults.o
+OBJS += $(PS2_OBJ) $(IRX_OBJ)
+
+include nesemu.make
+
+icon_icn.o: icon_icn
+
+icon_icn: icon.icn
+	$(BIN2S) $< $@.s $@
+	$(EE_CC) -c $@.s
+	rm $@.s
+
+%.c: $(BMP_DIR)/%.bmp
+	$(BMP2C) $< $(*F) > $@

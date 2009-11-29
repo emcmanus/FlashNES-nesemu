@@ -1,0 +1,198 @@
+# nesemu source code common to all targets
+
+# nes sources
+NES_OBJ = nes/nes.o nes/nes_io.o nes/memory.o nes/nsf/nsfplayer.o nes/romdb/crc.o nes/romdb/crc_fds.o
+FDS_OBJ = nes/fds/nes_fds.o nes/fds/hle_fds.o nes/fds/hle_fds_calls.o
+ROM_OBJ = nes/rom/rom.o nes/rom/ines.o nes/rom/ines20.o nes/rom/fds.o
+ROM_OBJ += nes/rom/unif.o nes/rom/nsf.o 
+NES_OBJ += nes/state/blocks.o nes/state/state.o
+#nes/rom/rom_nst.o
+CPU_OBJ = nes/cpu/dead6502.o nes/cpu/dead6502_disasm.o
+PPU_OBJ = nes/ppu/ppu.o nes/ppu/io.o nes/ppu/event.o nes/ppu/draw.o
+PPU_OBJ += nes/ppu/palette.o nes/ppu/cache.o
+INPUTDEV_OBJ = nes/inputdev/joypad0.o nes/inputdev/joypad1.o nes/inputdev/joypad02.o nes/inputdev/joypad13.o
+INPUTDEV_OBJ += nes/inputdev/zapper.o nes/inputdev/powerpad.o
+INPUTDEV_OBJ += nes/inputdev/exp_arkanoid.o nes/inputdev/exp_studykeyboard.o
+MATTAPU_OBJ = nes/apu/mattapu.o
+BLARGGAPU_OBJ = nes/blarggapu/Nes_Apu.o nes/blarggapu/Nes_Oscs.cpp 
+BLARGGAPU_OBJ += nes/blarggapu/Nes_Namco.o nes/blarggapu/Nes_Vrc6.o
+BLARGGAPU_OBJ += nes/blarggapu/Blip_Buffer.o nes/blarggapu/Multi_Buffer.o nes/blarggapu/Nonlinear_Buffer.o
+BLARGGAPU_OBJ += nes/blarggapu/blarggapu.o nes/blarggapu/apu_snapshot.o nes/blarggapu/Simple_Apu.o
+
+#APU_OBJ = $(BLARGGAPU_OBJ)
+APU_OBJ = $(MATTAPU_OBJ)
+
+NES_OBJ += $(ROM_OBJ) $(FDS_OBJ) $(CPU_OBJ) $(PPU_OBJ) $(INPUTDEV_OBJ) $(APU_OBJ)
+
+# gui2 sources
+GUI2_OBJ = gui2/gui2.o gui2/elements/menubar.o gui2/elements/menu.o gui2/elements/menuitem.o gui2/elements/button.o gui2/windows/load.o gui2/elements/scrollbar.o
+GUI2_OBJ += gui2/elements/edit.o gui2/elements/text.o gui2/elements/list.o gui2/elements/radio.o gui2/elements/radiogroup.o gui2/elements/checkbox.o gui2/font_zsnes.o
+GUI2_OBJ += gui2/windows/videocfg.o gui2/windows/inputcfg.o gui2/windows/soundcfg.o gui2/windows/devices.o gui2/windows/palettecfg.o gui2/windows/about.o gui2/gui2_draw.o
+GUI2_OBJ += gui2/windows/options.o gui2/windows/mappers.o gui2/windows/paths.o gui2/windows/supported_mappers.o gui2/windows/gui_input.o
+GUI2_OBJ += gui2/windows/tracer.o gui2/windows/rom_info.o gui2/windows/memory_viewer.o
+GUI2_OBJ += gui2/windows/nametable_viewer.o gui2/windows/patterntable_viewer.o
+
+# mapper sources
+CHIPS_OBJ = mappers/chips/mmc1.o mappers/chips/mmc2.o mappers/chips/mmc3.o
+CHIPS_OBJ += mappers/chips/mmc4.o mappers/chips/mmc5.o mappers/chips/mmc6.o
+CHIPS_OBJ += mappers/chips/vrc1.o mappers/chips/vrc2.o mappers/chips/vrc3.o
+CHIPS_OBJ += mappers/chips/vrc4.o mappers/chips/vrc6.o mappers/chips/vrc7.o
+CHIPS_OBJ += mappers/chips/latch.o mappers/chips/fme7.o mappers/chips/irem_h-3001.o
+CHIPS_OBJ += mappers/chips/sachen_8259.o mappers/chips/sachen_tca01.o
+CHIPS_OBJ += mappers/chips/namco_106.o mappers/chips/mapper90.o mappers/chips/txc_22211.o
+SOUND_OBJ = mappers/sound/s_N106.o mappers/sound/s_FME7.o mappers/sound/s_FDS.o
+SOUND_OBJ += mappers/sound/s_VRC6.o mappers/sound/s_VRC7.o mappers/sound/s_MMC5.o
+BOARD_OBJ = mappers/boards/caltron.o mappers/boards/smb2ja.o mappers/boards/biomiraclea.o mappers/boards/bmc_70in1.o
+INES_OBJ = mappers/ines/mapper000.o mappers/ines/mapper001.o mappers/ines/mapper002.o mappers/ines/mapper003.o
+INES_OBJ += mappers/ines/mapper004.o mappers/ines/mapper005.o mappers/ines/mapper006.o mappers/ines/mapper007.o
+INES_OBJ += mappers/ines/mapper008.o mappers/ines/mapper009.o mappers/ines/mapper010.o mappers/ines/mapper011.o
+INES_OBJ += mappers/ines/mapper013.o mappers/ines/mapper015.o mappers/ines/mapper018.o mappers/ines/mapper019.o
+INES_OBJ += mappers/ines/mapper021.o mappers/ines/mapper022.o mappers/ines/mapper023.o
+INES_OBJ += mappers/ines/mapper024.o mappers/ines/mapper025.o mappers/ines/mapper026.o mappers/ines/mapper027.o
+INES_OBJ += mappers/ines/mapper033.o mappers/ines/mapper034.o mappers/ines/mapper039.o
+INES_OBJ += mappers/ines/mapper040.o mappers/ines/mapper041.o mappers/ines/mapper042.o
+INES_OBJ += mappers/ines/mapper044.o mappers/ines/mapper045.o mappers/ines/mapper046.o mappers/ines/mapper047.o
+INES_OBJ += mappers/ines/mapper048.o mappers/ines/mapper049.o mappers/ines/mapper050.o mappers/ines/mapper051.o mappers/ines/mapper052.o
+INES_OBJ += mappers/ines/mapper057.o mappers/ines/mapper058.o
+INES_OBJ += mappers/ines/mapper060.o mappers/ines/mapper061.o mappers/ines/mapper062.o
+INES_OBJ += mappers/ines/mapper064.o mappers/ines/mapper065.o mappers/ines/mapper066.o mappers/ines/mapper067.o
+INES_OBJ += mappers/ines/mapper068.o mappers/ines/mapper069.o
+INES_OBJ += mappers/ines/mapper070.o mappers/ines/mapper071.o mappers/ines/mapper072.o mappers/ines/mapper073.o
+INES_OBJ += mappers/ines/mapper075.o mappers/ines/mapper079.o
+INES_OBJ += mappers/ines/mapper085.o mappers/ines/mapper087.o mappers/ines/mapper090.o mappers/ines/mapper092.o mappers/ines/mapper094.o
+INES_OBJ += mappers/ines/mapper105.o mappers/ines/mapper107.o mappers/ines/mapper108.o
+INES_OBJ += mappers/ines/mapper112.o mappers/ines/mapper113.o mappers/ines/mapper115.o mappers/ines/mapper118.o mappers/ines/mapper119.o
+INES_OBJ += mappers/ines/mapper132.o mappers/ines/mapper133.o
+INES_OBJ += mappers/ines/mapper137.o mappers/ines/mapper140.o mappers/ines/mapper143.o
+INES_OBJ += mappers/ines/mapper164.o mappers/ines/mapper165.o mappers/ines/mapper170.o mappers/ines/mapper172.o mappers/ines/mapper173.o
+INES_OBJ += mappers/ines/mapper180.o mappers/ines/mapper184.o mappers/ines/mapper185.o mappers/ines/mapper189.o
+INES_OBJ += mappers/ines/mapper191.o mappers/ines/mapper192.o mappers/ines/mapper193.o mappers/ines/mapper194.o
+INES_OBJ += mappers/ines/mapper197.o
+INES_OBJ += mappers/ines/mapper200.o mappers/ines/mapper201.o mappers/ines/mapper203.o
+INES_OBJ += mappers/ines/mapper209.o mappers/ines/mapper210.o
+INES_OBJ += mappers/ines/mapper212.o mappers/ines/mapper214.o
+INES_OBJ += mappers/ines/mapper225.o mappers/ines/mapper230.o mappers/ines/mapper231.o mappers/ines/mapper232.o mappers/ines/mapper234.o
+INES_OBJ += mappers/ines/mapper240.o mappers/ines/mapper242.o
+INES_OBJ += mappers/ines/mapper245.o mappers/ines/mapper246.o mappers/ines/mapper249.o mappers/ines/mapper253.o mappers/ines/mapper254.o
+UNIF_OBJ = mappers/unif/btl-mario1-malee2.o
+UNIF_OBJ += mappers/unif/btl-biomiraclea.o
+UNIF_OBJ += mappers/unif/btl-tek2a.o
+UNIF_OBJ += mappers/unif/bmc-70in1.o
+UNIF_OBJ += mappers/unif/bmc-fk23c.o
+UNIF_OBJ += mappers/unif/bmc-generic42in1.o
+UNIF_OBJ += mappers/unif/bmc-super24in1sc03.o
+UNIF_OBJ += mappers/unif/colordreams.o
+UNIF_OBJ += mappers/unif/hvc-un1rom.o
+UNIF_OBJ += mappers/unif/konami-vrc-1.o
+UNIF_OBJ += mappers/unif/konami-vrc-2.o
+UNIF_OBJ += mappers/unif/konami-vrc-3.o
+UNIF_OBJ += mappers/unif/konami-vrc-4.o
+UNIF_OBJ += mappers/unif/konami-vrc-6.o
+UNIF_OBJ += mappers/unif/konami-vrc-7.o
+UNIF_OBJ += mappers/unif/mlt-caltron6in1.o
+UNIF_OBJ += mappers/unif/namco_1xx.o
+UNIF_OBJ += mappers/unif/nes-nrom.o
+UNIF_OBJ += mappers/unif/nes-axrom.o
+UNIF_OBJ += mappers/unif/nes-bxrom.o
+UNIF_OBJ += mappers/unif/nes-cxrom.o
+UNIF_OBJ += mappers/unif/nes-fxrom.o
+UNIF_OBJ += mappers/unif/nes-hxrom.o
+UNIF_OBJ += mappers/unif/nes-jxrom.o
+UNIF_OBJ += mappers/unif/nes-pxrom.o
+UNIF_OBJ += mappers/unif/nes-sxrom.o
+UNIF_OBJ += mappers/unif/nes-txrom.o
+UNIF_OBJ += mappers/unif/nes-uxrom.o
+UNIF_OBJ += mappers/unif/sunsoft-fme-7.o
+UNIF_OBJ += mappers/unif/unl-603-5052.o
+UNIF_OBJ += mappers/unif/unl-kof97.o
+UNIF_OBJ += mappers/unif/unl-h2288.o
+UNIF_OBJ += mappers/unif/unl-22211.o
+UNIF_OBJ += mappers/unif/unl-sachen-74ls374n.o
+UNIF_OBJ += mappers/unif/unl-sachen-8259.o
+UNIF_OBJ += mappers/unif/unl-sa-0036.o
+UNIF_OBJ += mappers/unif/unl-sa-72007.o
+UNIF_OBJ += mappers/unif/unl-sa-72008.o
+UNIF_OBJ += mappers/unif/unl-sa-nrom.o
+
+LINUX_OBJ = $(SDL_OBJ) system/linux/filesystem.o system/linux/config.o
+OSX_OBJ = $(LINUX_OBJ) system/osx/stricmp.o
+
+# sdl source files
+SDL_OBJ = system/sdl/video.o system/sdl/input.o system/sdl/sound.o
+SDL_OBJ += system/sdl/system.o system/sdl/file.o system/sdl/config_defaults.o
+SDL_OBJ += system/sdl/scale2x/scale2x.o
+SDL_OBJ += system/sdl/scale2x/scale3x.o
+SDL_OBJ += system/sdl/scale2x/scalebit.o
+SDL_OBJ += system/sdl/interpolate/interpolate.o
+SDL_OBJ += system/sdl/hq2x/hq2x.o
+SDL_OBJ += system/sdl/hq2x/hq3x.o
+SDL_OBJ += system/sdl/nes_ntsc/nes_ntsc.o
+
+OBJS = nesemu.o log.o misc.o splash.o $(NES_OBJ) $(GUI2_OBJ) system/config.o
+
+SOURCES = *.c *.h \
+	unused/blarggapu/*.c* unused/blarggapu/*.h* unused/blarggapu/boost/*.h* \
+	resources/nsf_bios/*.s resources/nsf_bios/*.sh resources/nsf_bios/linkfile \
+	resources/hle_fds/*.s resources/hle_fds/*.sh resources/hle_fds/linkfile \
+	resources/*.bmp resources/*.icn resources/*.pal \
+	projects/codeblocks/nesemu.cbp \
+	projects/vc2005/nesemu.sln projects/vc2005/nesemu.vcproj \
+	projects/vc2008/nesemu.sln projects/vc2008/nesemu.vcproj \
+	Makefile.* nesemu.make nesemu.defs
+
+SOURCES += nes/*.c nes/*.h \
+	nes/cpu/*.c nes/cpu/*.h \
+	nes/ppu/*.c nes/ppu/*.h \
+	nes/apu/*.c nes/apu/*.h \
+	nes/inputdev/*.c nes/inputdev/*.h \
+	nes/rom/*.c nes/rom/*.h \
+	nes/romdb/*.c nes/romdb/*.h \
+	nes/fds/*.c nes/fds/*.h \
+	nes/nsf/*.c nes/nsf/*.h \
+	nes/state/*.c nes/state/*.h
+
+SOURCES += mappers/*.c mappers/*.h \
+	mappers/chips/*.c mappers/chips/*.h \
+	mappers/sound/*.c mappers/sound/*.h \
+	mappers/boards/*.c mappers/boards/*.h \
+	mappers/ines/*.c mappers/ines20/*.c mappers/unif/*.c
+
+SOURCES += gui2/*.c gui2/*.h \
+	gui2/windows/*.c gui2/windows/*.h \
+	gui2/elements/*.c gui2/elements/*.h
+
+SOURCES += system/*.h system/*.c \
+	system/win32/nesemu.rc \
+	system/win32/SDL_win32_main.c \
+	system/win32/filesystem.* \
+	system/win32/mainicon.ico \
+	system/win32/resource.h \
+	system/wii/*.c \
+	system/ps2/*.c system/ps2/*.h system/ps2/*.s \
+	system/sdl/*.c system/win32/*.c system/linux/*.c \
+	system/sdl/scale2x/scale2x.* system/sdl/scale2x/scale3x.* system/sdl/scale2x/scalebit.* \
+	system/sdl/interpolate/interpolate.* \
+	system/sdl/hq2x/hq2x.* system/sdl/hq2x/hq3x.* \
+	system/sdl/nes_ntsc/nes_ntsc*.c system/sdl/nes_ntsc/nes_ntsc*.h \
+	system/osx/*.m system/osx/*.h
+
+OBJS += mappers/mapper_ines.o mappers/mapper_ines20.o mappers/mapper_unif.o
+OBJS += $(CHIPS_OBJ) $(SOUND_OBJ) $(BOARD_OBJ) $(INES_OBJ) $(UNIF_OBJ)
+
+# default packer works for most targets
+PACKER = upx
+PACKERFLAGS = --best -o $(TARGETP) $(TARGET)
+
+# check for debug build
+#ifeq ($(DEBUG),0)
+	CFLAGS += -O3 -fomit-frame-pointer -funroll-loops
+#else
+#	CFLAGS += -g
+#endif
+
+# tar command used
+TAR = tar --exclude=*.o -czvf
+
+# utility programs
+BMP2C = bmp2c
+BIN2S = bin2s

@@ -1,0 +1,1315 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="nesemu" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option show_notes="0">
+			<notes>
+				<![CDATA[todo before version 0.2.0:
+
+--rewrite the cpu
+--pass all of blargg's tests
+--SPRITE 0 = PERFECT!
+--keep speed up for ps2, fast forward isnt too fast
+--mappers, mappers, mappers!
+--optional: 'real' game genie support
+
+--fix mapper90 load state/reset crash
+
+ps2 additions:
+
+--when controller is unplugged, prompt for it to be plugged back in
+--detect memcard insertions/removals
+
+untested mappers:
+--mapper 231
+  20-in-1
+--mapper 170
+--mapper 172
+
+partially working mappers:
+
+--mmc3 has chr problems
+--vrc6/vrc7 irqs: fix these asap
+--mapper 112
+  -all games
+
+--mapper 45 -- bootleg games
+
+--mapper 52
+
+--mapper 69
+  -irq problems?  (most likely)
+
+--mapper 79
+  -blackjack (ave)
+
+--mapper 113
+
+--mapper 132
+  -qi wang - chinese chess (ch)
+
+--mapper 137 (chr problems)
+
+--mapper 165
+  -fire emblem (messed up chr)
+
+--mapper 189
+  -prg problems?
+  -chr problems too
+
+--mapper 193
+  - fighting warrior
+
+--BMC-FK23C
+  -incomplete
+
+--mapper 6 -- FFE crap
+
+]]>
+			</notes>
+		</Option>
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\nesemu" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectIncludeDirsRelation="2" />
+				<Option projectLibDirsRelation="2" />
+				<Compiler>
+					<Add option="-march=pentium2" />
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-fno-omit-frame-pointer" />
+					<Add option="-D_DEBUG" />
+					<Add option="-DLOGGER" />
+					<Add option="-DMEMWATCH" />
+					<Add directory="C:\libpng-1.2.32" />
+					<Add directory="C:\zlib" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add option="-lSDL" />
+					<Add option="-lSDLmain" />
+					<Add option="-luser32" />
+					<Add option="-lshell32" />
+					<Add option="-lgdi32" />
+					<Add option="-lkernel32" />
+					<Add library="libzlib.a" />
+					<Add directory="C:\libpng-1.2.32" />
+					<Add directory="C:\zlib\zlib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\nesemu" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters='--windowed &quot;../roms/old/smb3.nes*&quot;' />
+				<Option projectIncludeDirsRelation="2" />
+				<Compiler>
+					<Add option="-march=pentium2" />
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+					<Add option="-funroll-loops" />
+					<Add option="-DLOGGER" />
+					<Add directory="C:\libpng-1.2.32" />
+					<Add directory="c:\zlib" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-lSDL" />
+					<Add option="-lSDLmain" />
+					<Add library="libzlib.a" />
+					<Add directory="C:\libpng-1.2.32" />
+					<Add directory="C:\zlib\zlib" />
+				</Linker>
+			</Target>
+			<Target title="PS2 Release">
+				<Option output="bin\PS2 Release\nesemu.elf" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="bin\PS2 Release\" />
+				<Option object_output="obj\PS2 Release\" />
+				<Option type="1" />
+				<Option compiler="copy_of_gnu_gcc_compiler" />
+				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+					<Add option="-W" />
+					<Add option="-G0" />
+					<Add option="-Ic:/ps2/ps2sdk/ee/include -Ic:/ps2/ps2sdk/common/include -Ic:/ps2/zlib-1.2.3" />
+					<Add option="-DROM_PADMAN" />
+					<Add option="-DTYPE_MC" />
+					<Add option="-DPS2" />
+					<Add option="-DEE" />
+					<Add option="-DPS2_EE" />
+					<Add directory="C:\ps2\zlib-1.2.3" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-nostartfiles" />
+					<Add option="-T c:/ps2/ps2sdk/ee/startup/linkfile" />
+					<Add option="c:/ps2/ps2sdk/ee/startup/crt0.o" />
+					<Add option="-Lc:/ps2/ps2sdk/ee/lib" />
+					<Add option="-Lc:/ps2/zlib-1.2.3" />
+					<Add option="-lfileXio" />
+					<Add option="-lhdd" />
+					<Add option="-lmc" />
+					<Add option="-ldma" />
+					<Add option="-lpad" />
+					<Add option="-lm" />
+					<Add option="-lz" />
+					<Add option="-lc" />
+					<Add option="-lkernel" />
+				</Linker>
+			</Target>
+			<Environment>
+				<Variable name="nesemu_src_path" value="C:\ps2\nesemu" />
+			</Environment>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-I$(nesemu_src_path)" />
+			<Add option="-fomit-frame-pointer" />
+			<Add option="-fno-common" />
+			<Add option="-funsigned-char" />
+			<Add directory="..\..\libfilter\include" />
+		</Compiler>
+		<Unit filename="C:\SDL-1.2.13\src\main\win32\SDL_win32_main.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\defines.h" />
+		<Unit filename="..\gui2\colors.h" />
+		<Unit filename="..\gui2\draw\draw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\draw\draw.h" />
+		<Unit filename="..\gui2\draw\draw16.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\draw\draw16.h" />
+		<Unit filename="..\gui2\draw\draw32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\draw\draw32.h" />
+		<Unit filename="..\gui2\draw\draw8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\draw\draw8.h" />
+		<Unit filename="..\gui2\elements\button.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\button.h" />
+		<Unit filename="..\gui2\elements\checkbox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\checkbox.h" />
+		<Unit filename="..\gui2\elements\edit.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\edit.h" />
+		<Unit filename="..\gui2\elements\list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\list.h" />
+		<Unit filename="..\gui2\elements\menu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\menu.h" />
+		<Unit filename="..\gui2\elements\menubar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\menubar.h" />
+		<Unit filename="..\gui2\elements\menuitem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\menuitem.h" />
+		<Unit filename="..\gui2\elements\radio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\radio.h" />
+		<Unit filename="..\gui2\elements\radiogroup.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\radiogroup.h" />
+		<Unit filename="..\gui2\elements\scrollbar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\scrollbar.h" />
+		<Unit filename="..\gui2\elements\text.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\elements\text.h" />
+		<Unit filename="..\gui2\font_zsnes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\gui2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\gui2.h" />
+		<Unit filename="..\gui2\gui2_draw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\gui2_draw.h" />
+		<Unit filename="..\gui2\windows\about.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\about.h" />
+		<Unit filename="..\gui2\windows\devices.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\devices.h" />
+		<Unit filename="..\gui2\windows\gui_input.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\gui_input.h" />
+		<Unit filename="..\gui2\windows\inputcfg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\inputcfg.h" />
+		<Unit filename="..\gui2\windows\load.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\load.h" />
+		<Unit filename="..\gui2\windows\mappers.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\mappers.h" />
+		<Unit filename="..\gui2\windows\memory_viewer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\memory_viewer.h" />
+		<Unit filename="..\gui2\windows\options.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\options.h" />
+		<Unit filename="..\gui2\windows\palettecfg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\palettecfg.h" />
+		<Unit filename="..\gui2\windows\paths.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\paths.h" />
+		<Unit filename="..\gui2\windows\rom_info.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\rom_info.h" />
+		<Unit filename="..\gui2\windows\soundcfg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\soundcfg.h" />
+		<Unit filename="..\gui2\windows\supported_mappers.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\supported_mappers.h" />
+		<Unit filename="..\gui2\windows\tracer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\tracer.h" />
+		<Unit filename="..\gui2\windows\videocfg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\gui2\windows\videocfg.h" />
+		<Unit filename="..\log.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\log.h" />
+		<Unit filename="..\mappers\boards\biomiraclea.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\boards\biomiraclea.h" />
+		<Unit filename="..\mappers\boards\bmc_70in1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\boards\bmc_70in1.h" />
+		<Unit filename="..\mappers\boards\caltron.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\boards\caltron.h" />
+		<Unit filename="..\mappers\boards\smb2ja.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\boards\smb2ja.h" />
+		<Unit filename="..\mappers\chips\fme7.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\fme7.h" />
+		<Unit filename="..\mappers\chips\irem_h-3001.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\irem_h-3001.h" />
+		<Unit filename="..\mappers\chips\latch.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\latch.h" />
+		<Unit filename="..\mappers\chips\mapper90.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\mapper90.h" />
+		<Unit filename="..\mappers\chips\mmc1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\mmc1.h" />
+		<Unit filename="..\mappers\chips\mmc2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\mmc2.h" />
+		<Unit filename="..\mappers\chips\mmc3.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\mmc3.h" />
+		<Unit filename="..\mappers\chips\mmc4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\mmc4.h" />
+		<Unit filename="..\mappers\chips\mmc5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\mmc5.h" />
+		<Unit filename="..\mappers\chips\mmc6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\mmc6.h" />
+		<Unit filename="..\mappers\chips\namco_106.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\namco_106.h" />
+		<Unit filename="..\mappers\chips\sachen_8259.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\sachen_8259.h" />
+		<Unit filename="..\mappers\chips\sachen_tca01.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\sachen_tca01.h" />
+		<Unit filename="..\mappers\chips\txc_22211.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\txc_22211.h" />
+		<Unit filename="..\mappers\chips\vrc1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\vrc1.h" />
+		<Unit filename="..\mappers\chips\vrc2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\vrc2.h" />
+		<Unit filename="..\mappers\chips\vrc3.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\vrc3.h" />
+		<Unit filename="..\mappers\chips\vrc4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\vrc4.h" />
+		<Unit filename="..\mappers\chips\vrc6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\vrc6.h" />
+		<Unit filename="..\mappers\chips\vrc7.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\chips\vrc7.h" />
+		<Unit filename="..\mappers\ines\mapper000.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper001.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper002.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper003.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper004.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper005.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper006.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper007.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper008.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper009.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper010.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper011.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper013.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper015.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper016.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper018.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper019.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper021.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper022.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper023.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper024.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper025.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper026.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper027.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper033.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper034.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper039.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper040.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper041.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper042.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper044.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper045.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper046.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper047.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper048.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper049.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper050.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper051.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper052.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper057.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper058.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper060.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper061.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper062.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper064.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper065.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper066.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper067.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper068.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper069.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper070.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper071.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper072.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper073.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper075.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper079.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper085.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper087.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper090.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper092.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper094.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper105.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper107.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper112.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper113.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper115.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper118.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper119.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper132.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper133.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper137.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper140.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper143.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper164.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper165.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper170.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper172.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper173.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper180.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper184.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper185.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper189.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper191.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper192.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper193.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper194.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper197.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper200.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper201.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper203.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper209.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper210.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper212.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper214.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper225.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper230.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper231.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper232.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper234.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper240.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper242.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper245.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper246.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper249.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\ines\mapper254.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\mapper.h" />
+		<Unit filename="..\mappers\mapper_ines.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\mapper_ines20.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\mapper_unif.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\sound\s_FDS.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\sound\s_FDS.h" />
+		<Unit filename="..\mappers\sound\s_FME7.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\sound\s_FME7.h" />
+		<Unit filename="..\mappers\sound\s_MMC5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\sound\s_MMC5.h" />
+		<Unit filename="..\mappers\sound\s_N106.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\sound\s_N106.h" />
+		<Unit filename="..\mappers\sound\s_VRC6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\sound\s_VRC6.h" />
+		<Unit filename="..\mappers\sound\s_VRC7.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\sound\s_VRC7.h" />
+		<Unit filename="..\mappers\unif\bmc-70in1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\bmc-fk23c.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\bmc-generic42in1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\bmc-super24in1sc03.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\btl-biomiraclea.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\btl-mario1-malee2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\btl-tek2a.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\hvc-un1rom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\konami-vrc-1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\konami-vrc-2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\konami-vrc-3.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\konami-vrc-4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\konami-vrc-6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\konami-vrc-7.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\mlt-caltron6in1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\namco_1xx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-axrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-bxrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-cxrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-fxrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-hxrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-jxrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-nrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-pxrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-sxrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-txrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\nes-uxrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\sunsoft-fme-7.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\unl-22211.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\unl-603-5052.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\unl-h2288.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\unl-kof97.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\unl-sa-0036.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\unl-sa-72007.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\unl-sa-72008.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\unl-sa-nrom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\unl-sachen-74ls374n.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\mappers\unif\unl-sachen-8259.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\memwatch.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="..\memwatch.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="..\misc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\misc.h" />
+		<Unit filename="..\nes\apu\mattapu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\apu\mattapu.h" />
+		<Unit filename="..\nes\cpu\dead6502.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\cpu\dead6502.h" />
+		<Unit filename="..\nes\cpu\dead6502_disasm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\fds\hle_fds.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\fds\hle_fds.h" />
+		<Unit filename="..\nes\fds\hle_fds_calls.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\fds\hle_fds_calls.h" />
+		<Unit filename="..\nes\fds\nes_fds.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\fds\nes_fds.h" />
+		<Unit filename="..\nes\inputdev\exp_arkanoid.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\inputdev\exp_arkanoid.h" />
+		<Unit filename="..\nes\inputdev\exp_barcode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\inputdev\exp_barcode.h" />
+		<Unit filename="..\nes\inputdev\exp_studykeyboard.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\inputdev\exp_studykeyboard.h" />
+		<Unit filename="..\nes\inputdev\inputdev.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\inputdev\inputdev.h" />
+		<Unit filename="..\nes\inputdev\joypad0.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\inputdev\joypad0.h" />
+		<Unit filename="..\nes\inputdev\joypad02.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\inputdev\joypad02.h" />
+		<Unit filename="..\nes\inputdev\joypad1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\inputdev\joypad1.h" />
+		<Unit filename="..\nes\inputdev\joypad13.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\inputdev\joypad13.h" />
+		<Unit filename="..\nes\inputdev\powerpad.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\inputdev\powerpad.h" />
+		<Unit filename="..\nes\inputdev\zapper.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\inputdev\zapper.h" />
+		<Unit filename="..\nes\memory.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\memory.h" />
+		<Unit filename="..\nes\nes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\nes.h" />
+		<Unit filename="..\nes\nes_io.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\nes_io.h" />
+		<Unit filename="..\nes\nsf\nsfplayer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\nsf\nsfplayer.h" />
+		<Unit filename="..\nes\ppu\cache.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\ppu\cache.h" />
+		<Unit filename="..\nes\ppu\draw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\ppu\event.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\ppu\event.h" />
+		<Unit filename="..\nes\ppu\io.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\ppu\io.h" />
+		<Unit filename="..\nes\ppu\palette.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\ppu\palette.h" />
+		<Unit filename="..\nes\ppu\ppu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\ppu\ppu.h" />
+		<Unit filename="..\nes\rom\fds.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\rom\fds.h" />
+		<Unit filename="..\nes\rom\ines.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\rom\ines.h" />
+		<Unit filename="..\nes\rom\ines20.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\rom\ines20.h" />
+		<Unit filename="..\nes\rom\nsf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\rom\nsf.h" />
+		<Unit filename="..\nes\rom\rom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\rom\rom.h" />
+		<Unit filename="..\nes\rom\unif.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\rom\unif.h" />
+		<Unit filename="..\nes\romdb\crc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\romdb\crc.h" />
+		<Unit filename="..\nes\romdb\crc_fds.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\romdb\romdb.h" />
+		<Unit filename="..\nes\state\blocks.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\state\blocks.h" />
+		<Unit filename="..\nes\state\state.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nes\state\state.h" />
+		<Unit filename="..\nesemu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\nesemu.h" />
+		<Unit filename="..\screenshot.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\screenshot.h" />
+		<Unit filename="..\system\config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\system\config.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\file.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\filesystem.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\input.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\keys.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\config_defaults.c">
+			<Option compilerVar="CC" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\dma.h">
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\dma_asm.s">
+			<Option compilerVar="CC" />
+			<Option compiler="copy_of_gnu_gcc_compiler" use="1" buildCommand="$compiler -xassembler-with-cpp $options $includes -c $file -o $object" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\file.c">
+			<Option compilerVar="CC" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\filesystem.c">
+			<Option compilerVar="CC" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\g2.c">
+			<Option compilerVar="CC" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\g2.h">
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\gif.h">
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\gs.c">
+			<Option compilerVar="CC" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\gs.h">
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\gs_asm.s">
+			<Option compilerVar="CC" />
+			<Option compiler="copy_of_gnu_gcc_compiler" use="1" buildCommand="$compiler -xassembler-with-cpp $options $includes -c $file -o $object" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\gsvga.h">
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\input.c">
+			<Option compilerVar="CC" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\nesemu_icn.s">
+			<Option compilerVar="CC" />
+			<Option compiler="copy_of_gnu_gcc_compiler" use="1" buildCommand="$compiler -xassembler-with-cpp $options $includes -c $file -o $object" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\ps2.h">
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\ps2_asm.s">
+			<Option compilerVar="CC" />
+			<Option compiler="copy_of_gnu_gcc_compiler" use="1" buildCommand="$compiler -xassembler-with-cpp $options $includes -c $file -o $object" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\regs.h">
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\sjpcm.h">
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\sjpcm.s">
+			<Option compilerVar="CC" />
+			<Option compiler="copy_of_gnu_gcc_compiler" use="1" buildCommand="$compiler -xassembler-with-cpp $options $includes -c $file -o $object" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\sjpcm_rpc.c">
+			<Option compilerVar="CC" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\sound.c">
+			<Option compilerVar="CC" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\system.c">
+			<Option compilerVar="CC" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\usb_mass_irx.s">
+			<Option compilerVar="CC" />
+			<Option compiler="copy_of_gnu_gcc_compiler" use="1" buildCommand="$compiler -xassembler-with-cpp $options $includes -c $file -o $object" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\usbd_irx.s">
+			<Option compilerVar="CC" />
+			<Option compiler="copy_of_gnu_gcc_compiler" use="1" buildCommand="$compiler -xassembler-with-cpp $options $includes -c $file -o $object" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\ps2\video.c">
+			<Option compilerVar="CC" />
+			<Option target="PS2 Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\config_defaults.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\file.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\hq2x\hq2x.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\hq2x\hq2x.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\hq2x\hq3x.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\hq2x\hq3x.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\input.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\interpolate\interpolate.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\interpolate\interpolate.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\nes_ntsc\demo_impl.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\nes_ntsc\nes_ntsc.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\nes_ntsc\nes_ntsc.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\nes_ntsc\nes_ntsc_config.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\nes_ntsc\nes_ntsc_impl.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\scale2x\file.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\scale2x\pixel.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\scale2x\portable.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\scale2x\scale2x.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\scale2x\scale2x.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\scale2x\scale3x.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\scale2x\scale3x.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\scale2x\scalebit.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\scale2x\scalebit.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\sound.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\system.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sdl\video.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\sound.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\system.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\video.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\win32\filesystem.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\win32\nesemu.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\system\win32\resource.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="..\version.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

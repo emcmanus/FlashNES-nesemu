@@ -1,0 +1,32 @@
+# can be one of these: ps2 wii win32 linux osx
+BUILDTARGET = win32
+
+# set this to 1 for debugging enabled
+DEBUG = 0
+
+include nesemu.defs
+
+CC = gcc
+CXX = g++
+LD = gcc
+AS = as
+WINDRES = windres
+
+CFLAGS = -DSDL -I. -Ic:/zlib
+LDFLAGS = -s -lz -lSDL -lSDLmain
+
+TARGET = nesemu.exe
+TARGETP = nesemu-packed.exe
+
+# include screenshot code, this target supports them
+CFLAGS += -DSCREENSHOTS
+OBJS += screenshot.o
+
+# include the sdl and win32 code
+OBJS += $(SDL_OBJ) system/win32/filesystem.o system/win32/SDL_win32_main.o
+OBJS += system/win32/nesemu-res.o
+
+include nesemu.make
+
+system/win32/nesemu-res.o:
+	$(WINDRES) --input-format=rc --output-format=coff system/win32/nesemu.rc system/win32/nesemu-res.o

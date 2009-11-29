@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nesemu", "nesemu.vcproj", "{A25CFCB2-68F6-4297-85E6-82E1C8E1D2F8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nesemu2", "..\..\..\nesemu2\projects\vc2005\nesemu2.vcproj", "{1E81529D-CA55-4959-BA8C-011E9561BA7B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libstate", "..\..\..\libstate\projects\libstate\libstate.vcproj", "{D3409237-0A43-4CC3-BE5A-93CFC0FD3384}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libstate_test", "..\..\..\libstate\projects\libstate_test\libstate_test.vcproj", "{1D59FAA6-DBF4-487E-AF1B-1AB3440FACBE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libstate2", "..\..\..\libstate2\libstate2.vcproj", "{162E880B-E2B1-494B-9D8E-6800AEF824F8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A25CFCB2-68F6-4297-85E6-82E1C8E1D2F8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A25CFCB2-68F6-4297-85E6-82E1C8E1D2F8}.Debug|Win32.Build.0 = Debug|Win32
+		{A25CFCB2-68F6-4297-85E6-82E1C8E1D2F8}.Release|Win32.ActiveCfg = Release|Win32
+		{A25CFCB2-68F6-4297-85E6-82E1C8E1D2F8}.Release|Win32.Build.0 = Release|Win32
+		{1E81529D-CA55-4959-BA8C-011E9561BA7B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1E81529D-CA55-4959-BA8C-011E9561BA7B}.Debug|Win32.Build.0 = Debug|Win32
+		{1E81529D-CA55-4959-BA8C-011E9561BA7B}.Release|Win32.ActiveCfg = Release|Win32
+		{1E81529D-CA55-4959-BA8C-011E9561BA7B}.Release|Win32.Build.0 = Release|Win32
+		{D3409237-0A43-4CC3-BE5A-93CFC0FD3384}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D3409237-0A43-4CC3-BE5A-93CFC0FD3384}.Debug|Win32.Build.0 = Debug|Win32
+		{D3409237-0A43-4CC3-BE5A-93CFC0FD3384}.Release|Win32.ActiveCfg = Release|Win32
+		{D3409237-0A43-4CC3-BE5A-93CFC0FD3384}.Release|Win32.Build.0 = Release|Win32
+		{1D59FAA6-DBF4-487E-AF1B-1AB3440FACBE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1D59FAA6-DBF4-487E-AF1B-1AB3440FACBE}.Debug|Win32.Build.0 = Debug|Win32
+		{1D59FAA6-DBF4-487E-AF1B-1AB3440FACBE}.Release|Win32.ActiveCfg = Release|Win32
+		{1D59FAA6-DBF4-487E-AF1B-1AB3440FACBE}.Release|Win32.Build.0 = Release|Win32
+		{162E880B-E2B1-494B-9D8E-6800AEF824F8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{162E880B-E2B1-494B-9D8E-6800AEF824F8}.Debug|Win32.Build.0 = Debug|Win32
+		{162E880B-E2B1-494B-9D8E-6800AEF824F8}.Release|Win32.ActiveCfg = Release|Win32
+		{162E880B-E2B1-494B-9D8E-6800AEF824F8}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

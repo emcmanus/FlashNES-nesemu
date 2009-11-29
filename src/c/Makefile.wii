@@ -1,0 +1,52 @@
+# for devkitppc
+#include $(DEVKITPPC)/wii_rules
+
+# can be one of these: ps2 wii win32-mingw linux osx
+BUILDTARGET = wii
+
+# set this to 1 for debugging enabled
+DEBUG = 0
+
+# include common make stuff
+include nesemu.defs
+
+# set build tools
+CC = powerpc-gekko-gcc
+CXX = powerpc-gekko-g++
+AS = powerpc-gekko-as
+LD = powerpc-gekko-ld
+AR = powerpc-gekko-ar
+
+#ifeq ($(BLARGGAPU),1)
+#	CC = g++
+#	CXX = g++
+#endif
+
+CFLAGS = -MMD -MP -MF -mrvl -mcpu=750 -meabi -mhard-float -I.
+CFLAGS += -DC_RENDER -DGEKKO -DWII -DSDL
+CFLAGS += -g
+
+LDFLAGS = -g -mrvl -mcpu=750 -meabi -mhard-float -Wl,-Map,$(notdir $@).map
+LDFLAGS += -lz -lfat -lSDL -lwiiuse -lasnd -ldi -ldb -lbte -logc -lm
+#LDFLAGS += -s
+
+TARGET = nesemu.wii.elf
+TARGETD = nesemu.wii.dol
+TARGETP = nesemu-packed.wii.elf
+
+# include the wii system code
+#OBJS += $(filter-out system/sdl/system.o,$(SDL_OBJ))
+OBJS += system/wii/osd_ngc_gfx.o system/wii/osd_ngc_snd.o
+OBJS += system/wii/filesystem.o system/wii/system.o
+
+CFLAGS += -I$(DEVKITPPC)/include -I$(DEVKITPRO)/libogc/include
+LDFLAGS += -L$(DEVKITPPC)/lib -L$(DEVKITPRO)/libogc/lib/wii
+
+$(TARGETD): $(TARGET)
+	elf2dol $< $@
+
+include nesemu.make
+
+wiirelease: all
+	$(TAR) nesemu-src-$(VERSION).tar.gz $(SOURCES) README hle_fds.bin nsf_bios.bin
+	$(TAR) nesemu-$(BUILDTARGET)-$(VERSION).tar.gz $(TARGETD) README hle_fds.bin nsf_bios.bin

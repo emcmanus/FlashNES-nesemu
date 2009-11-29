@@ -1,0 +1,1 @@
+cd src/c/; make -f Makefile.flash all; cp libNES.swc ../as3/lib/;

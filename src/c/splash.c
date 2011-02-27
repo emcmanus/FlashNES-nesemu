@@ -1,3 +1,4 @@
+#include <string.h>
 #include "defines.h"
 
 int progress = 0;
@@ -149,7 +150,12 @@ void splash_draw()
 	int offset = 264*32+16;
 	int frame;
 
+	log_message("calling memset\n");
+	
 	memset(scr,0,256+8*240);
+	
+	log_message("returned from memset\n");
+	
 	video_setpalentry(0xCC,0xFF,0xFF,0xFF);
 	video_setpalentry(0,0x00,0x00,0x00);
 	video_setpalentry(1,0xF0,0xA0,0x80);
@@ -168,8 +174,17 @@ void splash_draw()
 			}
 		}
 	}
+	
+	log_message("about to call gui_draw_test once\n");
+	
 	gui_draw_text(7 + 0x40,32,64,"nesemu v"VERSION);
+	
+	log_message("calling again\n");
+	
 	gui_draw_text(7 + 0x40,32,74,"loading...");
+	
+	log_message("video update...\n");
+	
 	video_update(scr,256+8);
 }
 

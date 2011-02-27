@@ -310,6 +310,8 @@ void video_endframe()
 	pitch = screen->pitch / 4;
 
 	frames++;
+	
+#ifndef FLASH
 	if(config.showinfo) {
 		time2 = SDL_GetTicks();
 		if((t = time2 - time1) >= 1000) {
@@ -373,7 +375,9 @@ void video_endframe()
 	}
 	else if(screenscale == 1)
 		draw1x(scr,screen->pitch/4,tmpscreen,256,256,240);
-
+		
+#endif
+	
 	if(nes && nes->rom && nes->rom->mapper == 20 && fdsdrive) {
 		//draw fds drive read/write icon...
 		u32 *scr = (u32*)screen->pixels;
@@ -402,6 +406,9 @@ void video_endframe()
 		fastforward = 10;
 	SDL_Flip(screen);
 	SDL_UnlockSurface(screen);
+	
+// Skip sleep
+#ifndef FLASH
 #ifndef _PROFILE
 	t = SDL_GetTicks();
 	while((t - lasttime) < interval) {
@@ -412,6 +419,7 @@ void video_endframe()
 	}
 	lasttime = t;
 #endif
+#endif // FLASH
 }
 
 void video_update(u8 *s,int spitch)

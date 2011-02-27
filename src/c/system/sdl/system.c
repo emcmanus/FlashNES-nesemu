@@ -29,9 +29,14 @@ SDL_Joystick *joystick = 0;
 void init_system()
 {
 	int i;
-
+	
+#ifndef FLASH
 	if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)) {
+#else
+	if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO)) {
+#endif
 		printf("error at sdl init!\n");
+		log_message("Error Initializing: %s\n", SDL_GetError());
 		exit(0);
 	}
 	if(SDL_NumJoysticks() > 0) {

@@ -33,9 +33,10 @@ void loaddiskstate();
 void savediskstate();
 
 #ifdef FLASH
-int f_setup(void *data, AS3_Val args);
-int f_loop(void *data, AS3_Val args);
-int f_teardown(void *data, AS3_Val args);
+AS3_Val f_setup(void *data, AS3_Val args);
+AS3_Val f_loop(void *data, AS3_Val args);
+AS3_Val f_teardown(void *data, AS3_Val args);
+AS3_Val f_screen(void *data, AS3_Val args);
 #endif
 
 #endif

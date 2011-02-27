@@ -115,12 +115,14 @@ vmode_t *v;
 	// - Sets the RESET bit if the GS CSR register.
 	GS_RESET();
 
+#ifndef FLASH
 	// - Can someone please tell me what the sync.p
 	// instruction does. Synchronizes something :-)
 	__asm__("
 		sync.p
 		nop
 	");
+#endif
 
 	// - Sets up the GS IMR register (i guess).
 	// - The IMR register is used to mask and unmask certain interrupts,

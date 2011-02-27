@@ -77,8 +77,10 @@ void init()
 	config_load();
 	log_message("inited config\n");
 	video_init();
+// #ifndef FLASH
 	log_message("initing gui\n");
 	gui2_init();
+// #endif
 	gui_draw_setscreensize(256,240);
 	gui_draw_setscreen((u8*)nesscr,256+8);
 	splash_start(nesscr);
@@ -127,8 +129,15 @@ int system_setupsavelocation(int loc);
 #ifdef FLASH
 
 	#include "AS3.h"
-
-	int f_setup(void *data, AS3_Val args)
+	
+	// Defined in video.c
+	u32 *video_getscreen();
+	
+	AS3_Val f_screen(void *data, AS3_Val args)
+	{
+		return AS3_Ptr(video_getscreen());
+	}
+	AS3_Val f_setup(void *data, AS3_Val args)
 	{
 		char *p,*rom_filename = 0;
 		int i,doloadstate = 0;
@@ -195,9 +204,9 @@ int system_setupsavelocation(int loc);
 		
 		splash_stop();
 		
-		return 0;
+		return AS3_Null();
 	}
-	int f_loop(void *data, AS3_Val args)	// Main emulation loop
+	AS3_Val f_loop(void *data, AS3_Val args)	// Main emulation loop
 	{
 		// Poll the input
 		input_poll();
@@ -226,9 +235,9 @@ int system_setupsavelocation(int loc);
 				sound_update();
 		}
 		
-		return(0);
+		return AS3_Null();
 	}
-	int f_teardown(void *data, AS3_Val args)
+	AS3_Val f_teardown(void *data, AS3_Val args)
 	{
 		log_message("exiting...\n");
 		unloadrom();
@@ -237,7 +246,8 @@ int system_setupsavelocation(int loc);
 		free(nesscr);
 		nesemu_kill();
 		log_message("nesemu exiting...\n");
-		return(0);
+		
+		return AS3_Null();
 	}
 	
 #else	// Normal main

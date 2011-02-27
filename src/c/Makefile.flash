@@ -24,9 +24,9 @@ else
 	LDFLAGS += -s
 endif
 
-CFLAGS += -swc
+LDFLAGS += -swc
 
-TARGET = libNES
+TARGET = libNES.swc
 TARGETP = nesemu-packed.linux.elf
 
 # Flash-specific

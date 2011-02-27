@@ -54,10 +54,17 @@ void log_kill()
 	logfd = 0;
 }
 
+#ifdef FLASH
+#include "AS3.h"
+#endif
 void log_print(char *str)
 {
 	//output message to console
 	printf(str);
+	
+#ifdef FLASH
+	AS3_Trace(AS3_String(str));
+#endif
 
 	//if log file isnt open, maybe logging is disabled
 	if(logfd == 0)
